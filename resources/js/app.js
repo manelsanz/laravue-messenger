@@ -11,5 +11,11 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    methods: {
+        logout() {
+            // event.preventDefault();
+            document.getElementById('logout-form').submit();
+        }
+    }
 });

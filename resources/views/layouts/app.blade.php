@@ -20,6 +20,11 @@
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
 </head>
 <body>
+
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+
     <div id="app">
 
         <b-navbar toggleable type="dark" variant="primary">
@@ -37,8 +42,10 @@
                     @else
                         <!-- Navbar dropdowns -->
 
-                        <b-nav-item-dropdown text="Usuario" right>
-                        <b-dropdown-item href="#">Cerrar sesión</b-dropdown-item>
+                        <b-nav-item-dropdown text="{{ Auth::user()->name }}" right>
+                            <b-dropdown-item href="#" @click="logout">
+                                Cerrar sesión
+                            </b-dropdown-item>
                         </b-nav-item-dropdown>
 
                     @endguest

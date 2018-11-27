@@ -9764,7 +9764,13 @@ Vue.component('example-component', __webpack_require__(215));
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
 
 var app = new Vue({
-    el: '#app'
+    el: '#app',
+    methods: {
+        logout: function logout() {
+            // event.preventDefault();
+            document.getElementById('logout-form').submit();
+        }
+    }
 });
 
 /***/ }),
