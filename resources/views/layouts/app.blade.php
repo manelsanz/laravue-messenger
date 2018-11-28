@@ -19,13 +19,13 @@
     <!-- Styles -->
     <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
 </head>
-<body>
+<body class="h-100">
 
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>
 
-    <div id="app">
+    <div id="app" class="h-100">
 
         <b-navbar toggleable type="dark" variant="primary">
             <b-navbar-toggle target="nav_text_collapse"></b-navbar-toggle>
@@ -55,9 +55,8 @@
 
         </b-navbar>
 
-
         <!-- <main class="py-4"> -->
-            @yield('content')
+        @yield('content')
         <!-- </main> -->
     </div>
 </body>
