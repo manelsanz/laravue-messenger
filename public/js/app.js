@@ -33108,13 +33108,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["variant"],
+  props: {
+    variant: String,
+    conversation: Object
+  },
   data: function data() {
-    return {
-      name: "Juan Ramos",
-      lastMessage: "Tú: ¡Hasta luego lucah!",
-      lastTime: "1:37 pm"
-    };
+    return {};
   },
   mounted: function mounted() {
     console.log("Component mounted.");
@@ -33163,10 +33162,12 @@ var render = function() {
               attrs: { cols: "6", "align-self": "center" }
             },
             [
-              _c("p", { staticClass: "mb-1" }, [_vm._v(_vm._s(_vm.name))]),
+              _c("p", { staticClass: "mb-1" }, [
+                _vm._v(_vm._s(_vm.conversation.contact_name))
+              ]),
               _vm._v(" "),
               _c("p", { staticClass: "text-muted small mb-1" }, [
-                _vm._v(_vm._s(_vm.lastMessage))
+                _vm._v(_vm._s(_vm.conversation.last_message))
               ])
             ]
           ),
@@ -33176,7 +33177,7 @@ var render = function() {
             { staticClass: "d-none d-md-block", attrs: { cols: "3" } },
             [
               _c("p", { staticClass: "text-muted small" }, [
-                _vm._v(_vm._s(_vm.lastTime))
+                _vm._v(_vm._s(_vm.conversation.last_time))
               ])
             ]
           )
@@ -33263,13 +33264,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {};
+    return {
+      conversations: []
+    };
   },
   mounted: function mounted() {
-    console.log("Component mounted.");
+    this.getConversations();
+  },
+
+  methods: {
+    getConversations: function getConversations() {
+      var _this = this;
+
+      axios.get("/api/conversations").then(function (res) {
+        // console.log(res);
+        _this.conversations = res.data;
+      });
+    }
   }
 });
 
@@ -33298,14 +33317,12 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-list-group",
-        [
-          _c("contact-component", { attrs: { variant: "dark" } }),
-          _vm._v(" "),
-          _c("contact-component", { attrs: { variant: "" } }),
-          _vm._v(" "),
-          _c("contact-component", { attrs: { variant: "secondary" } })
-        ],
-        1
+        _vm._l(_vm.conversations, function(conversation) {
+          return _c("contact-component", {
+            key: "conversation_" + conversation.id,
+            attrs: { conversation: conversation }
+          })
+        })
       )
     ],
     1
@@ -33370,21 +33387,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      messages: []
+      messages: [],
+      newMessage: "",
+      contactId: this.contactId
     };
   },
   mounted: function mounted() {
-    var _this = this;
+    this.getMessages();
+  },
+  methods: {
+    getMessages: function getMessages() {
+      var _this = this;
 
-    axios.get("/api/messages").then(function (res) {
-      console.log(res.data);
+      axios.get("/api/messages?contact_id=" + 2).then(function (res) {
+        console.log(res.data);
 
-      _this.messages = res.data;
-    });
+        _this.messages = res.data;
+      });
+    },
+    postMessage: function postMessage() {
+      var _this2 = this;
+
+      var params = {
+        to_id: this.contactId,
+        content: this.newMessage
+      };
+      axios.post("/api/messages", params).then(function (res) {
+        console.log(res.data);
+        if (res.data.success) {
+          _this2.newMessage = "";
+          _this2.getMessages();
+        }
+      });
+    }
   }
 });
 
@@ -33418,12 +33459,11 @@ var render = function() {
               _vm._l(_vm.messages, function(message) {
                 return _c(
                   "message-conversation-component",
-                  { key: "message_" + message.id, attrs: { "from-me": false } },
-                  [
-                    _vm._v(
-                      "\n          " + _vm._s(message.content) + "\n      "
-                    )
-                  ]
+                  {
+                    key: "message_" + message.id,
+                    attrs: { "from-me": message.from_me }
+                  },
+                  [_vm._v(_vm._s(message.content))]
                 )
               }),
               _vm._v(" "),
@@ -33433,7 +33473,16 @@ var render = function() {
                 [
                   _c(
                     "b-form",
-                    { staticClass: "mb-0" },
+                    {
+                      staticClass: "mb-0",
+                      attrs: { autocomplete: "off" },
+                      on: {
+                        submit: function($event) {
+                          $event.preventDefault()
+                          return _vm.postMessage($event)
+                        }
+                      }
+                    },
                     [
                       _c(
                         "b-input-group",
@@ -33442,6 +33491,13 @@ var render = function() {
                             attrs: {
                               type: "text",
                               placeholder: "Escribe a tu amigo..."
+                            },
+                            model: {
+                              value: _vm.newMessage,
+                              callback: function($$v) {
+                                _vm.newMessage = $$v
+                              },
+                              expression: "newMessage"
                             }
                           }),
                           _vm._v(" "),
@@ -33450,7 +33506,9 @@ var render = function() {
                             [
                               _c(
                                 "b-button",
-                                { attrs: { variant: "primary" } },
+                                {
+                                  attrs: { type: "submit", variant: "primary" }
+                                },
                                 [_vm._v("Enviar")]
                               )
                             ],
