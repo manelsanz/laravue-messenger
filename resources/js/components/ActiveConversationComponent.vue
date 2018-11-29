@@ -7,29 +7,9 @@
         title="Conversación activa"
         class="h-100"
       >
-        <b-media vertical-align="center" class="mb-2">
-          <b-img
-            rounded="circle"
-            slot="aside"
-            blank
-            blank-color="#ccc"
-            width="48"
-            alt="placeholder"
-          ></b-img>
-          <b-card>Cras sit ament ahahh aajs a ask do.</b-card>
-        </b-media>
-
-        <b-media right-align vertical-align="center" class="mb-2">
-          <b-img
-            rounded="circle"
-            slot="aside"
-            blank
-            blank-color="#ccc"
-            width="48"
-            alt="placeholder"
-          ></b-img>
-          <b-card>Cras sit ament ahahh aajs a ask do.</b-card>
-        </b-media>
+        <message-conversation-component v-for="message in messages" :key="`message_${message.id}`" :from-me="false">
+            {{ message.content }}
+        </message-conversation-component>
 
         <div slot="footer">
           <b-form class="mb-0">
@@ -64,10 +44,16 @@
 <script>
 export default {
   data: function() {
-    return {};
+    return {
+      messages: []
+    };
   },
   mounted: function() {
-    console.log("Mounted.");
+    axios.get("/api/messages").then(res => {
+      console.log(res.data);
+
+      this.messages = res.data;
+    });
   }
 };
 </script>
