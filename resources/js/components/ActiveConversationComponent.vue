@@ -36,7 +36,7 @@
         alt="img"
         class="m-1"
       />
-      <p>Usuario seleccionado</p>
+      <p>{{ contactName }}</p>
       <hr>
       <b-form-checkbox>Desactivar notificaciones</b-form-checkbox>
     </b-col>
@@ -45,11 +45,14 @@
 
 <script>
 export default {
+  props: {
+    contactId: Number,
+    contactName: String
+  },
   data: function() {
     return {
       messages: [],
-      newMessage: "",
-      contactId: this.contactId
+      newMessage: ""
     };
   },
   mounted: function() {
@@ -57,9 +60,8 @@ export default {
   },
   methods: {
     getMessages() {
-      axios.get(`/api/messages?contact_id=${2}`).then(res => {
-        console.log(res.data);
-
+      axios.get(`/api/messages?contact_id=${this.contactId}`).then(res => {
+        // console.log(res.data);
         this.messages = res.data;
       });
     },
@@ -69,12 +71,18 @@ export default {
         content: this.newMessage
       };
       axios.post("/api/messages", params).then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.success) {
           this.newMessage = "";
           this.getMessages();
         }
       });
+    }
+  },
+  watch: {
+    contactId(value) {
+      console.log(`contact_id => ${this.contactId}`);
+      this.getMessages();
     }
   }
 };

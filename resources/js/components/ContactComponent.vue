@@ -1,5 +1,5 @@
 <template>
-  <b-list-group-item :variant="variant">
+  <b-list-group-item :variant="variant" @click="$emit('conversation-click')">
     <b-row class="p-2" align-h="center">
       <b-col cols="12" md="3" class="text-center">
         <b-img

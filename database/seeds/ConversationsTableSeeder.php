@@ -28,5 +28,10 @@ class ConversationsTableSeeder extends Seeder
             'user_id' => 2,
             'contact_id' => 1,
         ]);
+
+        Conversation::create([
+            'user_id' => 3,
+            'contact_id' => 1,
+        ]);
     }
 }
