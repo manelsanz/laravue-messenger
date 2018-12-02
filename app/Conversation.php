@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Conversation extends Model
 {
+    protected $fillable = ['user_id', 'contact_id', 'last_message', 'last_time'];
     protected $appends = ['contact_name'];
 
     public function contact()

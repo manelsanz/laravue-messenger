@@ -3,14 +3,21 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Auth;
 
 class Message extends Model
 {
-    protected $appends = ['from_me'];
     protected $fillable = ['from_id', 'to_id', 'content'];
+    // protected $appends = ['from_me'];
 
-    function getFromMeAttribute() {
-        return $this->from_id == auth()->user()->id;
-    }
+    // function getFromMeAttribute() {
+
+    //     $user = Auth::user();
+    //     if (!$user) {
+    //         return false;
+    //     }
+
+    //     return $this->from_id == $user->id;
+    // }
 
 }

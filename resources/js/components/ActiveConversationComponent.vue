@@ -10,7 +10,7 @@
         <message-conversation-component
           v-for="message in messages"
           :key="`message_${message.id}`"
-          :from-me="message.from_me"
+          :from-me="message.from_me ? true : false"
         >{{ message.content }}</message-conversation-component>
 
         <div slot="footer">
@@ -47,24 +47,18 @@
 export default {
   props: {
     contactId: Number,
-    contactName: String
+    contactName: String,
+    messages: Array
   },
   data: function() {
     return {
-      messages: [],
       newMessage: ""
     };
   },
   mounted: function() {
-    this.getMessages();
+    // this.getMessages();
   },
   methods: {
-    getMessages() {
-      axios.get(`/api/messages?contact_id=${this.contactId}`).then(res => {
-        // console.log(res.data);
-        this.messages = res.data;
-      });
-    },
     postMessage() {
       const params = {
         to_id: this.contactId,
@@ -74,16 +68,16 @@ export default {
         // console.log(res.data);
         if (res.data.success) {
           this.newMessage = "";
-          this.getMessages();
+          // this.getMessages();
         }
       });
     }
-  },
-  watch: {
-    contactId(value) {
-      console.log(`contact_id => ${this.contactId}`);
-      this.getMessages();
-    }
   }
+  // watch: {
+  //   contactId(value) {
+  //     console.log(`contact_id => ${this.contactId}`);
+  //     this.getMessages();
+  //   }
+  //}
 };
 </script>

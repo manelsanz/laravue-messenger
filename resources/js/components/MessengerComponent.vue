@@ -11,6 +11,7 @@
             v-if="activeConversation"
             :contact-id="activeConversation.contact_id"
             :contact-name="activeConversation.contact_name"
+            :messages="messages"
           ></active-conversation-component>
         </b-col>
       </b-row>
@@ -20,16 +21,42 @@
 
 <script>
 export default {
+  props: {
+    userId: Number
+  },
   data() {
     return {
-      activeConversation: null
+      activeConversation: null,
+      messages: []
     };
   },
-  mounted() {},
+  mounted() {
+    Echo.channel("exempleee").listen("MessageSent", data => {
+      console.log(data);
+      const message = data.message;
+      message.from_me = this.userId == message.from_id;
+      this.messages.push(message);
+    });
+  },
   methods: {
     changeActiveConversation(conversation) {
-      //   console.log('UEP IEP :D', conversation);
+      // console.log("UEP IEP :D", conversation);
+      if (
+        this.activeConversation != null &&
+        conversation.id == this.activeConversation.id
+      ) { 
+        return false;
+      }
       this.activeConversation = conversation;
+      this.getMessages();
+    },
+    getMessages() {
+      axios
+        .get(`/api/messages?contact_id=${this.activeConversation.contact_id}`)
+        .then(res => {
+          // console.log(res.data);
+          this.messages = res.data;
+        });
     }
   }
 };

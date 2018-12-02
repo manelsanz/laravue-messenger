@@ -14,11 +14,11 @@ export default {
   },
   data() {
     return {
-      content: 'abc'
+      // content: ""
     };
   },
   mounted() {
-    console.log("Component mounted.");
+    // console.log("Component mounted.");
   }
 };
 </script>
