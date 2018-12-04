@@ -33,6 +33,7 @@ class MessageController extends Controller
         ]);
 
         $result = [];
+        $result['message'] = $message;
         $result['success'] = $message->exists();
 
         return $result;

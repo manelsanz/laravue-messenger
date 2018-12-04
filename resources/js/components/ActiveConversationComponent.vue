@@ -66,8 +66,8 @@ export default {
       newMessage: ""
     };
   },
-  mounted: function() {
-    // this.getMessages();
+  updated() {
+    this.scrollToBottom();
   },
   methods: {
     postMessage() {
@@ -76,9 +76,12 @@ export default {
         content: this.newMessage
       };
       axios.post("/api/messages", params).then(res => {
-        // console.log(res.data);
+        // console.log('post message ok', res.data);
         if (res.data.success) {
           this.newMessage = "";
+          const message = res.data.message;
+          message.from_me = true;
+          this.$emit("message-created", message);
           // this.getMessages();
         }
       });
@@ -87,9 +90,6 @@ export default {
       const el = document.querySelector(".card-body-scroll");
       el.scrollTop = el.scrollHeight;
     }
-  },
-  updated() {
-    this.scrollToBottom();
   }
   // watch: {
   //   messages() {

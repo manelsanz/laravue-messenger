@@ -19,21 +19,16 @@
 
 <script>
 export default {
+  props: {
+    conversations: Array
+  },
   data() {
-    return {
-      conversations: []
-    };
+    return {};
   },
   mounted() {
-    this.getConversations();
+
   },
   methods: {
-    getConversations() {
-      axios.get("/api/conversations").then(res => {
-        // console.log(res);
-        this.conversations = res.data;
-      });
-    },
     selectConversation(conversation) {
         // console.log('Handle click conversation FIRED.', conversation);
         this.$emit('conversation-selected', conversation);
