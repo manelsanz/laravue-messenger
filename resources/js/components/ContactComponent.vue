@@ -2,7 +2,15 @@
 	<b-list-group-item :variant="variant" @click="$emit('conversation-click')">
 		<b-row class="p-2" align-h="center">
 			<b-col cols="12" md="3" class="text-center">
-				<b-img rounded="circle" blank width="60" height="60" blank-color="#777" alt="img" class="m-1"/>
+				<b-img
+					rounded="circle"
+					:src="image"
+					width="60"
+					height="60"
+					title="Imagen usuario"
+					alt="Imagen usuario"
+					class="m-1"
+				/>
 			</b-col>
 			<b-col cols="6" align-self="center" class="d-none d-md-block">
 				<p class="mb-1">
@@ -36,13 +44,16 @@ export default {
 		return {};
 	},
 	mounted() {
-		console.log("Component mounted.");
+		// console.log("Component mounted.");
 	},
 	computed: {
 		lastTime() {
 			return moment(this.conversation.last_time, "YYYY-MM-DD hh:mm:ss")
 				.locale("es")
 				.fromNow();
+		},
+		image() {
+			return `/users/${this.user.image}`;
 		}
 	}
 };
