@@ -18,6 +18,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/profile', 'ProfileController@edit')->name('profile.edit');
+Route::patch('/profile', 'ProfileController@update')->name('profile.update');
+
 
 Route::get('/api/conversations', 'ConversationController@index')->name('conversations.index');
 Route::get('/api/messages', 'MessageController@index')->name('messages.index');

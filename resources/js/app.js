@@ -5,6 +5,7 @@ import BootstrapVue from 'bootstrap-vue'
 Vue.use(BootstrapVue);
 
 Vue.component('messenger-component', require('./components/MessengerComponent.vue'));
+Vue.component('profile-form-component', require('./components/ProfileFormComponent.vue'));
 Vue.component('contact-component', require('./components/ContactComponent.vue'));
 Vue.component('contact-list-component', require('./components/ContactListComponent.vue'));
 Vue.component('active-conversation-component', require('./components/ActiveConversationComponent.vue'));
