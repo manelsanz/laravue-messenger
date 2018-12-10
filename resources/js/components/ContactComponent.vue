@@ -4,7 +4,7 @@
 			<b-col cols="12" md="3" class="text-center">
 				<b-img
 					rounded="circle"
-					:src="image"
+					:src="conversation.contact_image"
 					width="60"
 					height="60"
 					title="Imagen usuario"
@@ -51,10 +51,10 @@ export default {
 			return moment(this.conversation.last_time, "YYYY-MM-DD hh:mm:ss")
 				.locale("es")
 				.fromNow();
-		},
-		image() {
-			return `/users/${this.user.image}`;
 		}
+		// image() {
+		// 	return `/users/${this.conversation.contact_image}`;
+		// }
 	}
 };
 </script>

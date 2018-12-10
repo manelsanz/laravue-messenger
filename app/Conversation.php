@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Conversation extends Model
 {
     protected $fillable = ['user_id', 'contact_id', 'last_message', 'last_time'];
-    protected $appends = ['contact_name'];
+    protected $appends = ['contact_name', 'contact_image'];
 
     public function contact()
     {
@@ -18,5 +18,10 @@ class Conversation extends Model
     {
         // return $this->contact->name;
         return $this->contact()->first(['name'])->name;
+    }
+
+    public function getContactImageAttribute()
+    {
+        return '/users/' . $this->contact()->first(['image'])->image;
     }
 }
