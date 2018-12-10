@@ -4,6 +4,7 @@
 			v-for="conversation in conversations"
 			:key="`conversation_${conversation.id}`"
 			:conversation="conversation"
+			:selected="selectedConversationId === conversation.id ? true : false"
 			@conversation-click="selectConversation(conversation)"
 		></contact-component>
 		<!-- <contact-component variant="dark"></contact-component>
@@ -18,11 +19,14 @@ export default {
 		conversations: Array
 	},
 	data() {
-		return {};
+		return {
+			selectedConversationId: null
+		};
 	},
 	methods: {
 		selectConversation(conversation) {
 			// console.log('Handle click conversation FIRED.', conversation);
+			this.selectedConversationId = conversation.id;
 			this.$emit("conversation-selected", conversation);
 		}
 	}

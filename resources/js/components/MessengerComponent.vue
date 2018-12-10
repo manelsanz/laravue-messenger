@@ -22,6 +22,8 @@
 						v-if="activeConversation"
 						:contact-id="activeConversation.contact_id"
 						:contact-name="activeConversation.contact_name"
+						:contact-image="activeConversation.contact_image"
+						:my-image="userImageUrl"
 						:messages="messages"
 						@message-created="addMessage($event)"
 					></active-conversation-component>
@@ -34,7 +36,8 @@
 <script>
 export default {
 	props: {
-		userId: Number
+		userId: Number,
+		userImage: String
 	},
 	data() {
 		return {
@@ -69,6 +72,9 @@ export default {
 			return this.conversations.filter(conversation =>
 				conversation.contact_name.toLowerCase().includes(this.querySearchContact.toLowerCase())
 			);
+		},
+		userImageUrl() {
+			return `/users/${this.userImage}`;
 		}
 	},
 	methods: {

@@ -14,7 +14,7 @@ class MessageController extends Controller
         $user_id = Auth::user()->id;
         $contact_id = $request->contact_id;
 
-        return Message::select('id', 'from_id', 'content', 'created_at', DB::raw("IF(`from_id`=$user_id, TRUE, FALSE) as from_me"))
+        return Message::select('id', 'from_id', 'content', 'created_at', DB::raw("IF(from_id=$user_id, TRUE, FALSE) as from_me"))
         ->where(function ($query) use ($user_id, $contact_id) {
             $query->where('from_id', $user_id)->where('to_id', $contact_id);
         })
@@ -22,6 +22,8 @@ class MessageController extends Controller
             $query->where('from_id', $contact_id)->where('to_id', $user_id);
         })
         ->get();
+
+        // return ['user' => $user_id, 'contact' => $contact_id, 'jeje' => true];
     }
 
     public function store(Request $request) 

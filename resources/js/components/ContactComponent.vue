@@ -37,8 +37,8 @@
 <script>
 export default {
 	props: {
-		variant: String,
-		conversation: Object
+		conversation: Object,
+		selected: Boolean
 	},
 	data() {
 		return {};
@@ -51,6 +51,9 @@ export default {
 			return moment(this.conversation.last_time, "YYYY-MM-DD hh:mm:ss")
 				.locale("es")
 				.fromNow();
+		},
+		variant() {
+			return this.selected ? 'secondary' : '';
 		}
 		// image() {
 		// 	return `/users/${this.conversation.contact_image}`;
