@@ -29,6 +29,7 @@ class ProfileController extends Controller
 
         $user->save();
         
+        // return response()->json(['success' => "Profile has been updated."], 201);
         return back();
     }
 }

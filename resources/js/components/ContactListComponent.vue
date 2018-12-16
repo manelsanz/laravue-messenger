@@ -20,7 +20,9 @@ export default {
       // console.log('Handle click conversation FIRED.', conversation);
       // this.selectedConversationId = conversation.id;
       // this.$emit("conversation-selected", conversation);
-      this.$store.dispatch("getMessages", conversation);
+      this.$router.push(`/chat/${conversation.id}`, () => {
+        this.$store.dispatch("getMessages", conversation);
+      });
     },
     isSelected(conversation) {
       if (this.selectedConversation)
@@ -33,7 +35,7 @@ export default {
       return this.$store.state.activeConversation;
     },
     conversationsFiltered() {
-        return this.$store.getters.conversationsFiltered;
+      return this.$store.getters.conversationsFiltered;
     }
   }
 };

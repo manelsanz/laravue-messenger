@@ -58,7 +58,7 @@ export default new Vuex.Store({
                 });
         },
         getConversations(context) {
-            axios.get("/api/conversations").then(res => {
+            return axios.get("/api/conversations").then(res => {
                 context.commit('newConversationsList', res.data);
             });
         },
@@ -88,5 +88,10 @@ export default new Vuex.Store({
                     .includes(state.querySearchContact.toLowerCase())
             );
         },
+        getConversationById(state) {
+            return function(id) {
+                return state.conversations.find(conversation => conversation.id == id);
+            }
+        }
     },
 });

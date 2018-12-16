@@ -22,7 +22,15 @@ export default {
   },
   mounted() {
     this.$store.commit("setUser", this.user);
-    this.$store.dispatch("getConversations");
+    this.$store.dispatch("getConversations").then(() => {
+      const conversationId = this.$route.params.conversationId;
+      if (conversationId) {
+        const conversation = this.$store.getters.getConversationById(
+          conversationId
+        );
+        this.$store.dispatch("getMessages", conversation);
+      }
+    });
 
     Echo.private(`users.${this.user.id}`).listen("MessageSent", data => {
       console.log(data);
@@ -47,6 +55,17 @@ export default {
     }
   },
   methods: {
+    changeStatusContact(user, status) {
+      const index = this.$store.state.conversations.findIndex(conversation => {
+        return conversation.contact_id == user.id;
+      });
+      // conversation.online = true;
+      if (index >= 0)
+        this.$set(this.$store.state.conversations[index], "online", status);
+    },
+    addMessage(message) {
+      this.$store.commit("addMessage", message);
+    }
     // changeActiveConversation(conversation) {
     //   // console.log("UEP IEP :D", conversation);
     //   if (
@@ -58,14 +77,6 @@ export default {
     //   this.activeConversation = conversation;
     //   this.getMessages();
     // },
-    changeStatusContact(user, status) {
-      const index = this.$store.state.conversations.findIndex(conversation => {
-        return conversation.contact_id == user.id;
-      });
-      // conversation.online = true;
-      if (index >= 0)
-        this.$set(this.$store.state.conversations[index], "online", status);
-    }
   }
 };
 </script>
