@@ -35,7 +35,10 @@
       />
       <p>{{ activeConversation.contact_name }}</p>
       <hr>
-      <b-form-checkbox>Desactivar notificaciones</b-form-checkbox>
+      <b-form-checkbox
+        :checked="notificationStatus"
+        @change="postNotificationStatus"
+      >Desactivar notificaciones</b-form-checkbox>
     </b-col>
   </b-row>
 </template>
@@ -59,6 +62,9 @@ export default {
     this.scrollToBottom();
   },
   methods: {
+    postNotificationStatus(status) {
+      this.$store.dispatch("postNotificationStatus", status);
+    },
     postMessage() {
       this.$store.dispatch("postMessage", this.newMessage).then(() => {
         this.newMessage = "";
@@ -75,6 +81,9 @@ export default {
     },
     activeConversation() {
       return this.$store.state.activeConversation;
+    },
+    notificationStatus() {
+      return this.activeConversation.listen_notifications ? true : false;
     },
     myImage() {
       return `/users/${this.$store.state.user.image}`;

@@ -79,6 +79,24 @@ export default new Vuex.Store({
                 }
             });
         },
+        postNotificationStatus(context, status) {
+            const params = {
+                id: context.state.activeConversation.id,
+                listen_notifications: status
+            };
+            axios.post("/api/conversations/notify", params).then(res => {
+                console.log('post notification from store ok', res.data);
+                
+                if (res.data.success) {
+
+                    const conversation = context.state.activeConversation;
+                    conversation.listen_notifications = status ? 1 : 0;
+
+                    context.commit('selectConversation', conversation);
+                }
+            });
+        },
+
     },
     getters: {
         conversationsFiltered(state) {
@@ -89,7 +107,7 @@ export default new Vuex.Store({
             );
         },
         getConversationById(state) {
-            return function(id) {
+            return function (id) {
                 return state.conversations.find(conversation => conversation.id == id);
             }
         }

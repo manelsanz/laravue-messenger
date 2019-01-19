@@ -14,7 +14,21 @@ class ConversationController extends Controller
 
         return Conversation::where('user_id', auth()->user()->id)
         // ->with('contact:id,name')
-        ->select('id', 'contact_id', 'last_message', 'last_time', 'has_blocked', 'listen_notifications')
-        ->get();
+            ->select('id', 'contact_id', 'last_message', 'last_time', 'has_blocked', 'listen_notifications')
+            ->get();
+    }
+
+    public function updateNotifications(Request $request)
+    {
+        $conversation = Conversation::findOrfail($request->input('id'));
+
+        $conversation->listen_notifications = $request->input('listen_notifications') ? 1 : 0;
+        $saved = $conversation->save();
+
+        $result = [];
+        // $result['message'] = $message;
+        $result['success'] = $saved;
+
+        return $result;
     }
 }

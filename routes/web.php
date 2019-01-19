@@ -25,6 +25,7 @@ Route::patch('/profile', 'ProfileController@update')->name('profile.update');
 
 
 Route::get('/api/conversations', 'ConversationController@index')->name('conversations.index');
+Route::post('/api/conversations/notify', 'ConversationController@updateNotifications')->name('conversations.update_notifications');
 Route::get('/api/messages', 'MessageController@index')->name('messages.index');
 Route::post('/api/messages', 'MessageController@store')->name('messages.store');
 
